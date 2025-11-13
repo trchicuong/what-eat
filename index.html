@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Hôm Nay Ăn Gì? - Gợi Ý Món Ăn Hàng Ngày</title>
+    <meta name="title" content="🍜 Hôm Nay Ăn Gì? - Gợi Ý Món Ăn Hàng Ngày" />
+    <meta
+      name="description"
+      content="Ứng dụng gợi ý món ăn thông minh, giúp bạn quyết định ăn gì mỗi ngày. Xáo bài, chọn món, theo dõi chuỗi streak và nhận thành tích. Miễn phí, offline, không quảng cáo!"
+    />
+    <meta
+      name="keywords"
+      content="hôm nay ăn gì, gợi ý món ăn, ăn gì hôm nay, món ăn ngon, ứng dụng ẩm thực, gợi ý món, random món ăn, chọn món ăn, PWA, offline"
+    />
+    <meta name="author" content="trchicuong" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Vietnamese" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+
+    <!-- PWA & Theme -->
+    <meta name="theme-color" content="#58CC02" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Hôm Nay Ăn Gì?" />
+    <meta name="application-name" content="Hôm Nay Ăn Gì?" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512x512.png" />
+    <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- DNS Prefetch & Preconnect -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts - Optimized for mobile (Nunito only, use system emoji) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="preloader-content">
+        <div class="preloader-logo-wrapper">
+          <img src="/images/icon.png" alt="Hôm nay ăn gì" class="preloader-logo" />
+        </div>
+        <p class="preloader-tip" id="preloaderTip">💡 Thêm nhiều món để có nhiều lựa chọn hơn!</p>
+        <div class="preloader-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Main Container -->
+    <div class="app-container">
+      <!-- Header Stats -->
+      <header class="header-minimal">
+        <div class="stats-bar">
+          <div class="stat-mini">
+            <span class="stat-emoji">🔥</span>
+            <span class="stat-num" id="streak">0</span>
+          </div>
+          <button class="logo-mini" id="logoBtn" title="Về trang chủ">
+            <img src="/images/icon.png" alt="Logo" class="logo-img" />
+          </button>
+          <div class="stat-mini">
+            <span class="stat-emoji">⭐</span>
+            <span class="stat-num" id="points">0</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-game">
+        <div class="game-section">
+          <!-- Title -->
+          <h1 class="main-title">Hôm Nay Ăn Gì?</h1>
+          <p class="subtitle" id="subtitleTip">Chọn một lá bài! 🃏</p>
+
+          <!-- Food Cards Grid -->
+          <div class="cards-container" id="cardsContainer">
+            <!-- Cards will be generated here -->
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="primary-action-btn start-btn" id="startBtn" style="display: none">
+              <span class="btn-text">Bắt Đầu</span>
+            </button>
+            <button class="primary-action-btn shuffle-btn" id="shuffleBtn" style="display: none">
+              <span class="btn-text">Xáo Lại</span>
+            </button>
+          </div>
+
+          <!-- Quick Actions Bar -->
+          <div class="action-bar">
+            <button class="action-btn" id="addFoodBtn" title="Thêm món">
+              <span>➕</span>
+            </button>
+            <button class="action-btn" id="viewListBtn" title="Danh sách">
+              <span>📋</span>
+            </button>
+            <button class="action-btn" id="historyBtn" title="Lịch sử">
+              <span>📜</span>
+            </button>
+            <button class="action-btn" id="achievementsBtn" title="Thành tích">
+              <span>🏆</span>
+            </button>
+            <button class="action-btn" id="settingsBtn" title="Cài đặt">
+              <span>⚙️</span>
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal: Food Manager -->
+    <div class="modal" id="addModal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <button class="modal-close" id="closeAddModal">✕</button>
+        <h3 class="modal-title">Thêm Món Mới</h3>
+        <div class="modal-body">
+          <input
+            type="text"
+            id="newFoodInput"
+            class="food-input-large"
+            placeholder="Tên món ăn..."
+            autocomplete="off"
+          />
+          <button class="btn-primary-large" id="confirmAddBtn">
+            <span>Thêm Món</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Food List -->
+    <div class="modal" id="listModal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-wide">
+        <button class="modal-close" id="closeListModal">✕</button>
+        <h3 class="modal-title">
+          Danh Sách Món Ăn <span class="food-count" id="foodCount">(0)</span>
+        </h3>
+        <div class="modal-body">
+          <input
+            type="text"
+            id="searchFoodInput"
+            class="search-input"
+            placeholder="🔍 Tìm kiếm món ăn..."
+            autocomplete="off"
+          />
+          <div class="food-chips" id="foodChips">
+            <!-- Food chips will be added here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: History -->
+    <div class="modal" id="historyModal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-wide">
+        <button class="modal-close" id="closeHistoryModal">✕</button>
+        <h3 class="modal-title">Lịch Sử Gợi Ý</h3>
+        <div class="modal-body">
+          <!-- Stats Summary -->
+          <div class="history-stats" id="historyStats">
+            <!-- Stats will be added here -->
+          </div>
+
+          <!-- Search History -->
+          <input
+            type="text"
+            id="searchHistoryInput"
+            class="search-input"
+            placeholder="🔍 Tìm kiếm lịch sử..."
+            autocomplete="off"
+          />
+
+          <!-- History List -->
+          <div class="history-section">
+            <h4 class="section-subtitle">📜 Lịch Sử</h4>
+            <div class="history-cards" id="historyCards">
+              <!-- History cards will be added here -->
+            </div>
+          </div>
+
+          <button class="btn-secondary-outline" id="clearHistoryBtn">Xóa Toàn Bộ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Achievements -->
+    <div class="modal" id="achievementsModal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-wide">
+        <button class="modal-close" id="closeAchievementsModal">✕</button>
+        <h3 class="modal-title">Thành Tích</h3>
+        <div class="modal-body">
+          <div class="achievements-grid" id="achievementsGrid">
+            <!-- Achievement cards will be added here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Settings -->
+    <div class="modal" id="settingsModal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-wide">
+        <button class="modal-close" id="closeSettingsModal">✕</button>
+        <h3 class="modal-title">Cài Đặt</h3>
+        <div class="modal-body">
+          <div class="setting-row">
+            <div class="setting-text">
+              <div class="setting-title">Tự động đóng băng chuỗi</div>
+              <div class="setting-desc">Tốn 50 điểm khi lỡ 1 ngày để giữ streak</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoFreezeToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-text">
+              <div class="setting-title">Nhắc bữa ăn qua thông báo</div>
+              <div class="setting-desc">3 khung giờ theo giờ Việt Nam</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="mealReminderToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-group" id="mealOptions">
+            <label class="setting-checkbox">
+              <input type="checkbox" id="remindBreakfast" />
+              <span>Bữa sáng (07:00)</span>
+            </label>
+            <label class="setting-checkbox">
+              <input type="checkbox" id="remindLunch" />
+              <span>Bữa trưa (12:00)</span>
+            </label>
+            <label class="setting-checkbox">
+              <input type="checkbox" id="remindDinner" />
+              <span>Bữa tối (18:00)</span>
+            </label>
+          </div>
+
+          <button class="btn-primary-large" id="enablePushBtn">Bật thông báo</button>
+          <p class="setting-hint" id="pushStatus"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: About/Credits -->
+    <div class="modal" id="aboutModal">
+      <div class="modal-overlay"></div>
+      <div class="modal-content modal-compact">
+        <button class="modal-close" id="closeAboutModal">✕</button>
+        <h3 class="modal-title">Về Ứng Dụng</h3>
+        <div class="modal-body">
+          <div class="about-section">
+            <div class="app-info-compact">
+              <img src="/images/icon.png" alt="Hôm nay ăn gì" class="about-logo-small" />
+              <div class="app-meta">
+                <h4 class="about-app-name">Hôm Nay Ăn Gì?</h4>
+                <p class="about-version">Dự án trong thời gian rảnh của cậu sinh viên:) - v1.0.0</p>
+              </div>
+            </div>
+
+            <div class="storage-warning">
+              <div class="warning-icon">⚠️</div>
+              <div class="warning-content">
+                <h5 class="warning-title">Lưu ý về Dữ liệu</h5>
+                <p class="warning-text">
+                  Ứng dụng lưu trữ toàn bộ dữ liệu (món ăn, lịch sử, thành tích, chuỗi) trên
+                  <strong>bộ nhớ trình duyệt</strong> của bạn. Nếu xóa dữ liệu trình duyệt hoặc dùng
+                  chế độ ẩn danh, <strong>tất cả dữ liệu sẽ bị mất</strong>. Để giữ dữ liệu, hãy
+                  tránh xóa cache/cookies của trang này.
+                </p>
+              </div>
+            </div>
+
+            <div class="credits-compact">
+              <div class="credit-group">
+                <h5 class="credit-group-title">Design & Inspiration</h5>
+                <div class="credit-detail">
+                  <span class="credit-label">UI/UX Design:</span>
+                  <span class="credit-value">Inspired by Duolingo</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Color Palette:</span>
+                  <span class="credit-value">Duolingo Green System (#58CC02)</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Typography:</span>
+                  <span class="credit-value">Nunito Font (Google Fonts)</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Emoji Support:</span>
+                  <span class="credit-value">System Native Emoji Fonts</span>
+                </div>
+              </div>
+
+              <div class="credit-group">
+                <h5 class="credit-group-title">Technology Stack</h5>
+                <div class="credit-detail">
+                  <span class="credit-label">Build Tool:</span>
+                  <span class="credit-value">Vite v7.2.2</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">PWA Support:</span>
+                  <span class="credit-value">vite-plugin-pwa v1.1.0</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Animation Library:</span>
+                  <span class="credit-value">canvas-confetti v1.9.4</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Audio System:</span>
+                  <span class="credit-value">Web Audio API (Native)</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Push Notifications:</span>
+                  <span class="credit-value">Web Push API + Netlify Functions</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Backend Storage:</span>
+                  <span class="credit-value">Netlify Blobs + Functions</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Platform:</span>
+                  <span class="credit-value">Progressive Web Application</span>
+                </div>
+              </div>
+
+              <div class="credit-group">
+                <h5 class="credit-group-title">Special Thanks</h5>
+                <div class="credit-detail">
+                  <span class="credit-label">Duolingo Team:</span>
+                  <span class="credit-value">For the inspiring design system</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Google Fonts:</span>
+                  <span class="credit-value">For providing free font resources</span>
+                </div>
+                <div class="credit-detail">
+                  <span class="credit-label">Open Source Community:</span>
+                  <span class="credit-value">For amazing tools and libraries</span>
+                </div>
+              </div>
+
+              <div class="credit-footer">
+                <p class="credit-author">Developed with passion by <strong>trchicuong</strong></p>
+                <p class="credit-copyright">© 2025 Hôm Nay Ăn Gì. All rights reserved.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script type="module" src="/src/scripts/app.js"></script>
+  </body>
+</html>

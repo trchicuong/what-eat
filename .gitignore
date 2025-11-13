@@ -1,0 +1,17 @@
+node_modules
+dist
+dev-dist
+*.local
+.DS_Store
+*.log
+.env
+
+# Backup files
+*.backup
+*.backup2
+*.old
+*.wheel
+*.original
+
+# Local Netlify folder
+.netlify

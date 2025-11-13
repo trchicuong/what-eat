@@ -1,0 +1,36 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#89e219;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#58cc02;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#greenGrad)"/>
+  
+  <!-- Bowl Shadow -->
+  <ellipse cx="256" cy="405" rx="180" ry="32" fill="#46a302" opacity="0.25"/>
+  
+  <!-- Bowl Bottom -->
+  <path d="M 95 280 L 417 280 L 395 375 Q 388 395 365 400 L 147 400 Q 124 395 117 375 Z" 
+        fill="#ffffff"/>
+  
+  <!-- Bowl Rim (ellipse at top) -->
+  <ellipse cx="256" cy="280" rx="161" ry="24" fill="#f5f5f5"/>
+  <ellipse cx="256" cy="278" rx="161" ry="23" fill="#ffffff"/>
+  
+  <!-- Steam - 3 waves -->
+  <path d="M 170 235 Q 164 200 178 215 Q 188 230 178 245" 
+        stroke="#ffffff" stroke-width="9" fill="none" opacity="0.75" stroke-linecap="round"/>
+  <path d="M 256 220 Q 250 185 264 200 Q 274 215 264 230" 
+        stroke="#ffffff" stroke-width="9" fill="none" opacity="0.75" stroke-linecap="round"/>
+  <path d="M 342 235 Q 336 200 350 215 Q 360 230 350 245" 
+        stroke="#ffffff" stroke-width="9" fill="none" opacity="0.75" stroke-linecap="round"/>
+  
+  <!-- Chopsticks -->
+  <rect x="180" y="155" width="11" height="120" rx="5.5" 
+        transform="rotate(-18 185.5 155)" fill="#d2691e"/>
+  <rect x="201" y="153" width="11" height="120" rx="5.5" 
+        transform="rotate(-18 206.5 153)" fill="#a0522d"/>
+</svg>

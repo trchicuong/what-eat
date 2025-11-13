@@ -1,0 +1,14 @@
+# Netlify Configuration for Hôm Nay Ăn Gì
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+included_files = ["!node_modules/web-push/src/cli.js"]
+
+# Scheduled Function: Send meal reminders at Vietnam time (UTC+7)
+# Breakfast: 7AM VN = 0AM UTC, Lunch: 12PM VN = 5AM UTC, Dinner: 6PM VN = 11AM UTC
+[functions."send-reminders"]
+  schedule = "0 0,5,11 * * *"

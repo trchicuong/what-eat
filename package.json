@@ -1,0 +1,20 @@
+{
+  "name": "homnayangi",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.2.2",
+    "vite-plugin-pwa": "^1.1.0"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^10.3.3",
+    "canvas-confetti": "^1.9.4",
+    "web-push": "^3.6.7"
+  }
+}
